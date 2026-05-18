@@ -1,0 +1,74 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python src/prepare.py
+    deps:
+    - path: data/raw/credit_card_fraud_10k.csv
+      hash: md5
+      md5: ad23ecf72fe94009a0fd33e92736e45c
+      size: 370525
+    - path: src/prepare.py
+      hash: md5
+      md5: 4fed6d4688f258c1d8f405c0f28c8da6
+      size: 1815
+    outs:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 2b02be8e1ea6dc60117dbae12cfeaaa1
+      size: 106295
+    - path: data/processed/train.csv
+      hash: md5
+      md5: fd34c5b1f741ad778506a564f9c2953e
+      size: 424216
+  train:
+    cmd: python src/train.py
+    deps:
+    - path: data/processed/train.csv
+      hash: md5
+      md5: fd34c5b1f741ad778506a564f9c2953e
+      size: 424216
+    - path: src/train.py
+      hash: md5
+      md5: 30bb3907190fd1deb0e8d97446994d44
+      size: 2903
+    outs:
+    - path: models/stacking_model.pkl
+      hash: md5
+      md5: 7bebb5d31b7361f240aef03af8fadf27
+      size: 11744057
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 2b02be8e1ea6dc60117dbae12cfeaaa1
+      size: 106295
+    - path: models/stacking_model.pkl
+      hash: md5
+      md5: 7bebb5d31b7361f240aef03af8fadf27
+      size: 11744057
+    - path: src/evaluate.py
+      hash: md5
+      md5: b241225f36fcc525da74a82b96d17936
+      size: 2381
+    outs:
+    - path: outputs/confusion_matrix.png
+      hash: md5
+      md5: e95e560fe9d770ff0b3a3fd861090eee
+      size: 18608
+    - path: outputs/metrics.json
+      hash: md5
+      md5: 564a6eba91927efe7e33a8cb0b2e0379
+      size: 173
+    - path: outputs/metrics_bar_chart.png
+      hash: md5
+      md5: 27192ab0fa707ce3be84f4406130f224
+      size: 17937
+    - path: outputs/report.txt
+      hash: md5
+      md5: 2e99bcfbcbb88c07bd14cedb2380575e
+      size: 334
+    - path: outputs/roc_curve.png
+      hash: md5
+      md5: 4d6e9084a2d2686fac54f0c0de328251
+      size: 21822

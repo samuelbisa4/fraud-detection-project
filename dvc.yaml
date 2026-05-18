@@ -1,0 +1,28 @@
+stages:
+  prepare:
+    cmd: python src/prepare.py
+    deps:
+    - data/raw/credit_card_fraud_10k.csv
+    - src/prepare.py
+    outs:
+    - data/processed/test.csv
+    - data/processed/train.csv
+  train:
+    cmd: python src/train.py
+    deps:
+    - data/processed/train.csv
+    - src/train.py
+    outs:
+    - models/stacking_model.pkl
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - data/processed/test.csv
+    - models/stacking_model.pkl
+    - src/evaluate.py
+    outs:
+    - outputs/confusion_matrix.png
+    - outputs/metrics.json
+    - outputs/metrics_bar_chart.png
+    - outputs/report.txt
+    - outputs/roc_curve.png
